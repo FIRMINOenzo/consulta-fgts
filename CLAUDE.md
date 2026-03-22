@@ -73,3 +73,14 @@ For webhook testing in local dev, use `ngrok http 3000` and configure the ngrok 
 - Webhook endpoint (`/api/webhooks/v8/balance`) requires no auth (called by V8 externally)
 - CSV input: `cpf` (required, 11 digits with checksum validation), `nome` (optional)
 - Duplicate CPFs within a batch are deduplicated (keep first)
+
+## Commit pattern
+
+Commits should follow Conventional Commits, using prefixes like:
+
+- `feat`: for new features
+- `fix`: for bug fixes
+- `chore`: for tooling, infra, or non-business logic changes
+- `docs`: for documentation changes
+- `refactor`: for code refactoring that doesn't fix a bug or add a feature
+- `test`: for adding or updating tests
