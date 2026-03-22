@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("user") // "admin" | "user"
+  createdAt DateTime @default(now())
+
+  batches Batch[]
+}
+
+model Batch {
+  id        String   @id @default(uuid())
+  userId    String
+  fileName  String
+  provider  String   // "BMS" | "QI" | "CARTOS"
+  status    String   @default("pending") // "pending" | "processing" | "completed"
+  totalItems Int     @default(0)
+  processed  Int     @default(0)
+  createdAt DateTime @default(now())
+
+  user  User        @relation(fields: [userId], references: [id])
+  items BatchItem[]
+}
+
+model BatchItem {
+  id           String   @id @default(uuid())
+  batchId      String
+  cpf          String
+  customerName String?
+  status       String   @default("pending") // "pending" | "submitted" | "success" | "fail"
+  balance      Decimal?
+  installments String?  // JSON string
+  errorMessage String?
+  v8BalanceId  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  batch Batch @relation(fields: [batchId], references: [id])
+}
